@@ -18,7 +18,10 @@ export interface FrontpageSanityData {
     stories?: FrontpageStory[];
     message?: MessageDocument;
 }
-export const extractFrontpageData = (data: any, locale: string): FrontpageSanityData => {
+export const extractFrontpageData = (data: any, locale: string): FrontpageSanityData | undefined => {
+    if (!data) {
+        return undefined;
+    }
     const {
         showLanguageToggle,
         _rawIllustration,

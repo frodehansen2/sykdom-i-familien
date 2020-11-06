@@ -76,7 +76,7 @@ const SanitySectionPage: React.FunctionComponent<Props & InjectedIntlProps> = (p
         metadescription,
         showLanguageToggle,
         slug,
-        content,
+        content = [],
         showLeftMenu,
     } = extractDataFromSanitySectionPage(dataWithTabs, intl.locale);
 
@@ -100,35 +100,38 @@ const SanitySectionPage: React.FunctionComponent<Props & InjectedIntlProps> = (p
             }
             menuFooter={<Box />}
             header={<PageBannerCompact title={title} />}>
-            {content.map((c) => {
-                const key = c._id || c._key;
-                if (c._type === 'section') {
-                    const section = extractSectionData(c, intl.locale);
+            {content &&
+                content.map((c) => {
+                    const key = c._id || c._key;
+                    if (c._type === 'section') {
+                        const section = extractSectionData(c, intl.locale);
+                        return (
+                            <Box margin="none" key={key} className="sectionPageContentWrapper">
+                                <SectionPanel
+                                    key={key}
+                                    id={section.slug}
+                                    title={section.title}
+                                    illustration={
+                                        section.illustration ? (
+                                            <Box textAlignCenter={true} margin="none">
+                                                <SectionIcon illustration={section.illustration} />
+                                            </Box>
+                                        ) : undefined
+                                    }>
+                                    {section.content && (
+                                        <SanityBlockContent content={section.content} headingLevel={2} />
+                                    )}
+                                </SectionPanel>
+                            </Box>
+                        );
+                    }
+
                     return (
                         <Box margin="none" key={key} className="sectionPageContentWrapper">
-                            <SectionPanel
-                                key={key}
-                                id={section.slug}
-                                title={section.title}
-                                illustration={
-                                    section.illustration ? (
-                                        <Box textAlignCenter={true} margin="none">
-                                            <SectionIcon illustration={section.illustration} />
-                                        </Box>
-                                    ) : undefined
-                                }>
-                                {section.content && <SanityBlockContent content={section.content} headingLevel={2} />}
-                            </SectionPanel>
+                            <SanityBlockContent content={c} headingLevel={2} />
                         </Box>
                     );
-                }
-
-                return (
-                    <Box margin="none" key={key} className="sectionPageContentWrapper">
-                        <SanityBlockContent content={c} headingLevel={2} />
-                    </Box>
-                );
-            })}
+                })}
             <PrintOnly>
                 <SectionPanel title="Lenker i dokumentet">
                     <ol start={1}>

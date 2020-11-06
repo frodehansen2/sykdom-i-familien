@@ -12,7 +12,11 @@ interface Props {
 
 const Hovedside: React.FunctionComponent<Props> = ({ data, intl }: Props & InjectedIntlProps & RouterProps) => {
     const frontpageData = extractFrontpageData(data, intl.locale);
-    return <SanityFrontpage data={frontpageData} site={Site.sykdomIFamilien} />;
+    return frontpageData ? (
+        <SanityFrontpage data={frontpageData} site={Site.sykdomIFamilien} />
+    ) : (
+        <div>Data mangler</div>
+    );
 };
 
 export const pageQuery = graphql`

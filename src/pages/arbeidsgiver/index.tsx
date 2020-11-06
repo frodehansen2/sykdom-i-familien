@@ -15,7 +15,7 @@ const ArbeidsgiverForside: React.FunctionComponent<Props> = ({
     intl,
 }: Props & InjectedIntlProps & RouterProps) => {
     const frontpageData = extractFrontpageData(data, intl.locale);
-    return <SanityFrontpage data={frontpageData} site={Site.arbeidsgiver} />;
+    return frontpageData ? <SanityFrontpage data={frontpageData} site={Site.arbeidsgiver} /> : <div>Data mangler</div>;
 };
 
 export const pageQuery = graphql`
